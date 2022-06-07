@@ -29,3 +29,17 @@ int ordenaDigitos (int **A, int n, int posicao){
         A[i][1] = C[i][1];
     }
 }
+
+int ordenaNumeros(int **A, int n){
+    int maior = A[0][0];
+    for (int i = 1; i < n; i++){
+        if (A[i][0] > A[i-1][0]){
+            maior = A[i][0];
+        }
+    }
+    int posicao = 1;
+    while(maior/posicao > 0){
+        ordenaDigitos(A, n, posicao);
+        posicao = posicao * 10;
+    }
+}
