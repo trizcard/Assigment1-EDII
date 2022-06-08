@@ -1,0 +1,70 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include "ordena.h"
+
+void ordenaDigitos (int **A, int n, int posicao){
+    int B[10]; // uma declaração -> custo 1
+    
+    // para todo for o custo base é (n * (3 [1 de comparação e 2 para soma e atribuição de i] + x[custo do interior]) + 2 [declarar i e i = 0]
+    for (int i = 0; i < 10; i++){ // repete 10x 
+        B[i] = 0; // atribuição -> custo 1
+    } // custo (10 * 4) + 2 | total: 43
+
+    int digito; // uma declaração -> custo 1 | total: 44
+
+    for (int i = 0; i < n; i++){ // repete n vezes
+        digito = A[i][0]/posicao; // uma conta e uma atribuição -> custo 2
+        digito = digito % 10; // uma conta e uma atribuição -> custo 2
+        B[digito] = B[digito] + 1; // uma conta e uma atribuição -> custo 2
+    } // custo (n * 9) + 2 | total: 46 + 9n
+
+    for (int i = 1; i < 10; i++){ 
+        B[i] = B[i] + B[(i-1)]; // uma atribuição com conta -> custo 2
+    } // custo (n * 5) + 2 | total: 48 + 14n
+
+    int C[n][2]; // uma declaração -> custo 1 | total: 49 + 14n
+
+    for (int i = (n-1); i >= 0; i--){ // repete n vezes
+        digito = A[i][0]/posicao; // uma conta e uma atribuição -> custo 2
+        digito = digito % 10; // uma conta e uma atribuição -> custo 2
+        B[digito] = B[digito] - 1; // uma conta e uma atribuição -> custo 2
+        C[B[digito]][0] = A[i][0]; // uma atribuição -> custo 1
+        C[B[digito]][1] = A[i][1]; // uma atribuição -> custo 1
+    } // custo (n * 11) + 2 | total: 51 + 25n
+
+    for (int i = 0; i < n; i++){ // repete n vezes
+        A[i][0] = C[i][0]; // uma atribuição -> custo 1
+        A[i][1] = C[i][1]; // uma atribuição -> custo 1
+    } // custo (n * 5) + 2 | total: 53 + 30n
+
+} // função é O(n), ou seja, tem custo linear sempre, portanto:
+// melhor caso -> O(n)
+// caso médio -> O(n)
+// pior caso -> O(n)
+
+void ordenaNumeros(int **A, int n){
+    int maior = A[0][0]; // uma declaração e atribuição -> custo 2
+
+    for (int i = 1; i < n; i++){ // repete (n-1) vezes
+        if (A[i][0] > maior){ // compara -> custo 1
+            maior = A[i][0]; // uma atribuição -> custo 1
+        }
+    } // melhor caso (não entra no if nenhuma vez) -> n - 1 | total: n + 1
+    // pior caso (entra todas as vezes) -> 2n - 2 | total: 2n
+
+    int posicao = 1; // uma declaração e atribuição -> custo 2 | total: n + 3 ou 2n + 2
+
+    while(maior/posicao > 0){ // repete quantas vezes for o tamanho do numero
+        ordenaDigitos(A, n, posicao); // custo (53 + 30n)
+        posicao = posicao * 10; // uma conta e uma atribuição -> custo 2
+    }
+    // melhor caso (maior número tem apenas um algarismo) -> 31n + 58 ou 32n + 57
+    // O(n) -> custo linear
+
+    // pior caso (número de algarismo igual ou maior que n) -> a(número de algarismos) -> a*(30n + 57) + n + 3 ou a*(30n + 57) + 2n + 2
+    // O(na) -> custo polinomial
+
+    // caso médio -> dificilmente o tamanho dos números será maior que a quantidade de entradas, portanto, assume-se que o custo será linear:
+    // O(n) -> custo linear
+}
