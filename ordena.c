@@ -1,8 +1,13 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
+#include "ordena.h"
 
-int ordenaDigitos (int **A, int n, int posicao){
+void ordenaDigitos (int **A, int n, int posicao){
     int B[10];
+    for (int i = 0; i < 10; i++){
+        B[i] = 0;
+    }
     int digito;
     for (int i = 0; i < n; i++){
         digito = A[i][0]/posicao;
@@ -11,12 +16,12 @@ int ordenaDigitos (int **A, int n, int posicao){
     }
 
     for (int i = 1; i < 10; i++){
-        B[i] = B[i] + B[i-1];
+        B[i] = B[i] + B[(i-1)];
     }
 
     int C[n][2];
 
-    for (int i = n-1; i >= 0; i--){
+    for (int i = (n-1); i >= 0; i--){
         digito = A[i][0]/posicao;
         digito = digito % 10;
         B[digito] = B[digito] - 1;
@@ -30,7 +35,7 @@ int ordenaDigitos (int **A, int n, int posicao){
     }
 }
 
-int ordenaNumeros(int **A, int n){
+void ordenaNumeros(int **A, int n){
     int maior = A[0][0];
     for (int i = 1; i < n; i++){
         if (A[i][0] > A[i-1][0]){
