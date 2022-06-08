@@ -1,8 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include "ordena.h"
-
 void ordenaDigitos (int **A, int n, int posicao){
     int B[10]; // uma declaração -> custo 1
     
@@ -38,10 +33,11 @@ void ordenaDigitos (int **A, int n, int posicao){
         A[i][1] = C[i][1]; // uma atribuição -> custo 1
     } // custo (n * 5) + 2 | total: 53 + 30n
 
-} // função é O(n), ou seja, tem custo linear sempre, portanto:
-// melhor caso -> O(n)
-// caso médio -> O(n)
-// pior caso -> O(n)
+}
+Em resumo, analisando o código é possível perceber que a função é O(n) para todos os tipos de ocorrência, ou seja, apresenta custo linear sempre:
+* melhor caso -> O(n)
+* caso médio -> O(n)
+* pior caso -> O(n)
 
 void ordenaNumeros(int **A, int n){
     int maior = A[0][0]; // uma declaração e atribuição -> custo 2
@@ -59,12 +55,13 @@ void ordenaNumeros(int **A, int n){
         ordenaDigitos(A, n, posicao); // custo (53 + 30n)
         posicao = posicao * 10; // uma conta e uma atribuição -> custo 2
     }
-    // melhor caso (maior número tem apenas um algarismo) -> 31n + 58 ou 32n + 57
-    // O(n) -> custo linear
-
-    // pior caso (número de algarismo igual ou maior que n) -> a(número de algarismos) -> a*(30n + 57) + n + 3 ou a*(30n + 57) + 2n + 2
-    // O(na) -> custo polinomial
-
-    // caso médio -> dificilmente o tamanho dos números será maior que a quantidade de entradas, portanto, assume-se que o custo será linear:
-    // O(n) -> custo linear
 }
+Em resumo, a complexidade desse algoritmo depende do tamanho dos números (sua quantidade de algarismos), podendo:
+* Ser o melhor caso (quando o maior número tem apenas um algarismo) -> assim o custo é 31n + 58 ou 32n + 57
+    1. Em ambos apresenta O(n) -> custo linear
+
+*Ser o pior caso (quando o número de algarismo igual ou maior que n) -> a(número de algarismos) -> a*(30n + 57) + n + 3 ou a*(30n + 57) + 2n + 2
+    2. O(na) -> custo polinomial (na qual a pode ser igual a n, n², n³ etc)
+
+*Ser o caso médio, na qual dificilmente o tamanho dos números será maior que a quantidade de entradas, portanto, assume-se que o custo será o do melhor caso multiplicado por uma constante:
+    3. O(n) -> custo linear
