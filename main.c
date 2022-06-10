@@ -11,7 +11,7 @@ int main(){
 
     for (int i = 0; i < n; i++){
         A[i] = malloc (2 * sizeof(int)); // aloca memória para 2 colunas
-        scanf("%d %d", &A[i][0], &A[i][1]); 
+        scanf("%d,%d", &A[i][0], &A[i][1]); 
     }
     
     ordenaNumeros(A, n);

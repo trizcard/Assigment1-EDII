@@ -4,30 +4,52 @@
 #include "ordena.h"
 
 void ordenaDigitos (int **A, int n, int posicao){
-    int B[10];
+    int Bp[10], Bn[10];
+
     for (int i = 0; i < 10; i++){
-        B[i] = 0; // zera todos os valores de B
+        Bp[i] = 0; // zera todos os valores de B
+        Bn[i] = 0;
     }
 
     int digito;
     for (int i = 0; i < n; i++){
-        digito = A[i][0]/posicao;
-        digito = digito % 10; // seleciona o algarismo da posição desejada
-        B[digito] = B[digito] + 1; // soma quantos números tem esse determinado algarismo
+        if (A[i][0] < 0) {
+            digito = (-1*A[i][0])/posicao;
+            digito = digito % 10; // seleciona o algarismo da posição desejada
+            Bn[digito] = Bn[digito] + 1; // soma quantos números tem esse determinado algarismo
+        }
+        else {
+            digito = A[i][0]/posicao;
+            digito = digito % 10; // seleciona o algarismo da posição desejada
+            Bp[digito] = Bp[digito] + 1; // soma quantos números tem esse determinado algarismo
+        }
     }
-
+    
     for (int i = 1; i < 10; i++){
-        B[i] = B[i] + B[(i-1)];  // atribui o atual como a soma de si mais o anterior 
+        Bp[i] = Bp[i] + Bp[(i-1)];  // atribui o atual como a soma de si mais o anterior
     }
+    for (int i = 8; i >= 0; i--){
+        Bn[i] = Bn[i] + Bn[(i+1)];
+    }
+    int neg = Bn[0]; // qauntidade de negativos
 
     int C[n][2];
 
     for (int i = (n-1); i >= 0; i--){
-        digito = A[i][0]/posicao;
-        digito = digito % 10; // seleciona o algarismo da posição desejada
-        B[digito] = B[digito] - 1; 
-        C[B[digito]][0] = A[i][0]; // coloca na menor posição de uma matriz temporária o numero com dígito menor
-        C[B[digito]][1] = A[i][1];
+        if (A[i][0] < 0) {
+            digito = (-1*A[i][0])/posicao;
+            digito = digito % 10; // seleciona o algarismo da posição desejada
+            Bn[digito] = Bn[digito] - 1; 
+            C[Bn[digito]][0] = A[i][0]; // coloca na menor posição de uma matriz temporária o numero com dígito menor
+            C[Bn[digito]][1] = A[i][1];
+        }
+        else {
+            digito = A[i][0]/posicao;
+            digito = digito % 10; // seleciona o algarismo da posição desejada
+            Bp[digito] = Bp[digito] - 1; 
+            C[(Bp[digito]+neg)][0] = A[i][0]; // coloca na menor posição de uma matriz temporária o numero com dígito menor
+            C[(Bp[digito]+neg)][1] = A[i][1];
+        }
     }
 
     for (int i = 0; i < n; i++){
